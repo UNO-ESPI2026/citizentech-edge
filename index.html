@@ -1,478 +1,1051 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Amparo · Painel da família</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  /* Cores do manual de marca do Amparo */
-  :root {
-    --surface: #fbf7f0; --raised: #ffffff; --line: #7e888b;
-    --ink: #1c2629; --muted: #4e5a5d;
-    --brand: #0e5e5b; --on-brand: #ffffff; --brand-soft: #dcefea;
-    --sol: #f2a83b; --on-sol: #1c2629; --atencao-soft: #fdefd6;
-    --perigo: #b3261e; --on-perigo: #ffffff; --perigo-soft: #fbe3df;
-    --cinza: #4e5a5d; --focus: #1a4fd6;
-    --sombra: 0 2px 8px rgba(28,38,41,.10);
-  }
-  :root[data-tema="contraste"] {
-    --surface: #000; --raised: #000; --line: #fff;
-    --ink: #fff; --muted: #e6e6e6;
-    --brand: #7ff5e6; --on-brand: #000; --brand-soft: #00332e;
-    --sol: #ffd23f; --on-sol: #000; --atencao-soft: #332600;
-    --perigo: #ff7a6b; --on-perigo: #000; --perigo-soft: #2e0000;
-    --cinza: #e6e6e6; --focus: #ffff00;
-    --sombra: none;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; background: var(--surface); color: var(--ink);
-    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; font-size: 18px; line-height: 1.5;
-  }
-  a, button { font: inherit; }
-  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-  .container { max-width: 1180px; margin: 0 auto; padding: 16px; }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amparo · Painel da família</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+      /* Cores do manual de marca do Amparo */
+      :root {
+        --surface: #fbf7f0;
+        --raised: #ffffff;
+        --line: #7e888b;
+        --ink: #1c2629;
+        --muted: #4e5a5d;
+        --brand: #0e5e5b;
+        --on-brand: #ffffff;
+        --brand-soft: #dcefea;
+        --sol: #f2a83b;
+        --on-sol: #1c2629;
+        --atencao-soft: #fdefd6;
+        --perigo: #b3261e;
+        --on-perigo: #ffffff;
+        --perigo-soft: #fbe3df;
+        --cinza: #4e5a5d;
+        --focus: #1a4fd6;
+        --sombra: 0 2px 8px rgba(28, 38, 41, 0.1);
+      }
+      :root[data-tema="contraste"] {
+        --surface: #000;
+        --raised: #000;
+        --line: #fff;
+        --ink: #fff;
+        --muted: #e6e6e6;
+        --brand: #7ff5e6;
+        --on-brand: #000;
+        --brand-soft: #00332e;
+        --sol: #ffd23f;
+        --on-sol: #000;
+        --atencao-soft: #332600;
+        --perigo: #ff7a6b;
+        --on-perigo: #000;
+        --perigo-soft: #2e0000;
+        --cinza: #e6e6e6;
+        --focus: #ffff00;
+        --sombra: none;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--surface);
+        color: var(--ink);
+        font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      a,
+      button {
+        font: inherit;
+      }
+      :focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 16px;
+      }
 
-  /* Cabeçalho */
-  header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px 0 16px; }
-  .marca { display: flex; align-items: center; gap: 10px; margin-right: auto; }
-  .marca h1 { margin: 0; font-size: 26px; }
-  .marca span { font-size: 18px; color: var(--muted); font-weight: 700; }
-  .selo {
-    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;
-    border-radius: 999px; border: 2px solid var(--line); background: var(--raised); font-size: 16px; font-weight: 700;
-  }
-  .ponto { width: 12px; height: 12px; border-radius: 999px; background: var(--muted); }
-  .selo.ok .ponto { background: var(--brand); }
-  .selo.erro .ponto { background: var(--perigo); }
-  .botao {
-    min-height: 48px; padding: 0 18px; border-radius: 16px; border: 2px solid var(--line);
-    background: var(--raised); color: var(--ink); font-weight: 700; cursor: pointer; text-decoration: none;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .botao.primario { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
-  .botao.perigo { border-color: var(--perigo); color: var(--perigo); }
+      /* Cabeçalho */
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0 16px;
+      }
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: auto;
+      }
+      .marca h1 {
+        margin: 0;
+        font-size: 26px;
+      }
+      .marca span {
+        font-size: 18px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+      .selo {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 2px solid var(--line);
+        background: var(--raised);
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .ponto {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: var(--muted);
+      }
+      .selo.ok .ponto {
+        background: var(--brand);
+      }
+      .selo.erro .ponto {
+        background: var(--perigo);
+      }
+      .botao {
+        min-height: 48px;
+        padding: 0 18px;
+        border-radius: 16px;
+        border: 2px solid var(--line);
+        background: var(--raised);
+        color: var(--ink);
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .botao.primario {
+        background: var(--brand);
+        border-color: var(--brand);
+        color: var(--on-brand);
+      }
+      .botao.perigo {
+        border-color: var(--perigo);
+        color: var(--perigo);
+      }
 
-  /* Faixa de alerta (SOS / sem resposta) */
-  .faixa {
-    display: none; align-items: center; gap: 14px; padding: 16px 20px; margin-bottom: 16px;
-    border-radius: 24px; background: var(--perigo); color: var(--on-perigo);
-  }
-  .faixa.ativa { display: flex; animation: pulsar 1.2s ease-in-out infinite; }
-  .faixa strong { font-size: 24px; display: block; }
-  .faixa .acoes { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
-  .faixa .botao { border-color: var(--on-perigo); background: transparent; color: var(--on-perigo); }
-  @keyframes pulsar { 50% { opacity: .82; } }
-  @media (max-width: 600px) {
-    .faixa { flex-wrap: wrap; }
-    .faixa svg { width: 36px; height: 36px; }
-    .faixa .acoes { margin-left: 0; width: 100%; }
-    .faixa .acoes .botao { flex: 1 1 auto; justify-content: center; }
-  }
-  @media (prefers-reduced-motion: reduce) { .faixa.ativa { animation: none; } }
+      /* Faixa de alerta (SOS / sem resposta) */
+      .faixa {
+        display: none;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 20px;
+        margin-bottom: 16px;
+        border-radius: 24px;
+        background: var(--perigo);
+        color: var(--on-perigo);
+      }
+      .faixa.ativa {
+        display: flex;
+        animation: pulsar 1.2s ease-in-out infinite;
+      }
+      .faixa strong {
+        font-size: 24px;
+        display: block;
+      }
+      .faixa .acoes {
+        margin-left: auto;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .faixa .botao {
+        border-color: var(--on-perigo);
+        background: transparent;
+        color: var(--on-perigo);
+      }
+      @keyframes pulsar {
+        50% {
+          opacity: 0.82;
+        }
+      }
+      @media (max-width: 600px) {
+        .faixa {
+          flex-wrap: wrap;
+        }
+        .faixa svg {
+          width: 36px;
+          height: 36px;
+        }
+        .faixa .acoes {
+          margin-left: 0;
+          width: 100%;
+        }
+        .faixa .acoes .botao {
+          flex: 1 1 auto;
+          justify-content: center;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .faixa.ativa {
+          animation: none;
+        }
+      }
 
-  /* Grade */
-  .grade { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
-  .cartao { background: var(--raised); border-radius: 24px; padding: 20px 24px; box-shadow: var(--sombra); border: 2px solid transparent; }
-  :root[data-tema="contraste"] .cartao { border-color: var(--line); }
-  .col-5 { grid-column: span 5; } .col-7 { grid-column: span 7; }
-  .col-8 { grid-column: span 8; } .col-4 { grid-column: span 4; } .col-12 { grid-column: span 12; }
-  @media (max-width: 900px) { .col-5, .col-7, .col-8, .col-4 { grid-column: span 12; } }
-  h2 { margin: 0 0 12px; font-size: 22px; }
+      /* Grade */
+      .grade {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .cartao {
+        background: var(--raised);
+        border-radius: 24px;
+        padding: 20px 24px;
+        box-shadow: var(--sombra);
+        border: 2px solid transparent;
+      }
+      :root[data-tema="contraste"] .cartao {
+        border-color: var(--line);
+      }
+      .col-5 {
+        grid-column: span 5;
+      }
+      .col-7 {
+        grid-column: span 7;
+      }
+      .col-8 {
+        grid-column: span 8;
+      }
+      .col-4 {
+        grid-column: span 4;
+      }
+      .col-12 {
+        grid-column: span 12;
+      }
+      @media (max-width: 900px) {
+        .col-5,
+        .col-7,
+        .col-8,
+        .col-4 {
+          grid-column: span 12;
+        }
+      }
+      h2 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
 
-  /* Estado */
-  .estado { display: flex; flex-direction: column; gap: 10px; }
-  .estado .pessoa { display: flex; align-items: center; gap: 12px; }
-  .avatar {
-    width: 52px; height: 52px; border-radius: 999px; background: var(--brand-soft); color: var(--brand);
-    display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;
-  }
-  .nivel {
-    display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 20px;
-    background: var(--brand-soft);
-  }
-  .nivel svg { flex-shrink: 0; }
-  .etiqueta {
-    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px;
-    font-size: 16px; font-weight: 700; letter-spacing: .04em; background: var(--brand); color: var(--on-brand);
-  }
-  .nivel .titulo { font-size: 30px; line-height: 1.15; font-weight: 700; margin: 6px 0 0; }
-  .nivel .msg { margin: 4px 0 0; }
-  .estado[data-nivel="ATENCAO"] .nivel { background: var(--atencao-soft); }
-  .estado[data-nivel="ATENCAO"] .etiqueta { background: var(--sol); color: var(--on-sol); }
-  .estado[data-nivel="PERIGO"] .nivel,
-  .estado[data-nivel="SEM_RESPOSTA"] .nivel,
-  .estado[data-nivel="SOS"] .nivel { background: var(--perigo-soft); border: 3px solid var(--perigo); }
-  .estado[data-nivel="PERIGO"] .etiqueta,
-  .estado[data-nivel="SEM_RESPOSTA"] .etiqueta,
-  .estado[data-nivel="SOS"] .etiqueta { background: var(--perigo); color: var(--on-perigo); }
-  .estado[data-nivel="ERRO_SENSOR"] .etiqueta { background: var(--cinza); color: var(--surface); }
-  .atualizado { font-size: 16px; color: var(--muted); margin: 0; }
-  .acoes-estado { display: flex; gap: 10px; flex-wrap: wrap; }
+      /* Estado */
+      .estado {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .estado .pessoa {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .nivel {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        border-radius: 20px;
+        background: var(--brand-soft);
+      }
+      .nivel svg {
+        flex-shrink: 0;
+      }
+      .etiqueta {
+        display: inline-flex;
+        align-items: center;
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        background: var(--brand);
+        color: var(--on-brand);
+      }
+      .nivel .titulo {
+        font-size: 30px;
+        line-height: 1.15;
+        font-weight: 700;
+        margin: 6px 0 0;
+      }
+      .nivel .msg {
+        margin: 4px 0 0;
+      }
+      .estado[data-nivel="ATENCAO"] .nivel {
+        background: var(--atencao-soft);
+      }
+      .estado[data-nivel="ATENCAO"] .etiqueta {
+        background: var(--sol);
+        color: var(--on-sol);
+      }
+      .estado[data-nivel="PERIGO"] .nivel,
+      .estado[data-nivel="SEM_RESPOSTA"] .nivel,
+      .estado[data-nivel="SOS"] .nivel {
+        background: var(--perigo-soft);
+        border: 3px solid var(--perigo);
+      }
+      .estado[data-nivel="PERIGO"] .etiqueta,
+      .estado[data-nivel="SEM_RESPOSTA"] .etiqueta,
+      .estado[data-nivel="SOS"] .etiqueta {
+        background: var(--perigo);
+        color: var(--on-perigo);
+      }
+      .estado[data-nivel="ERRO_SENSOR"] .etiqueta {
+        background: var(--cinza);
+        color: var(--surface);
+      }
+      .atualizado {
+        font-size: 16px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .acoes-estado {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
 
-  /* Números */
-  .numeros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .numero { padding: 14px 16px; border-radius: 16px; border: 2px solid var(--line); }
-  .numero .rotulo { font-size: 15px; font-weight: 700; letter-spacing: .04em; color: var(--muted); text-transform: uppercase; }
-  .numero .valor { font-size: 34px; font-weight: 700; line-height: 1.2; }
-  .numero .extra { font-size: 16px; color: var(--muted); }
-  .numero.destaque { background: var(--brand-soft); border-color: transparent; }
-  @media (max-width: 480px) { .numeros { grid-template-columns: 1fr; } .numero .valor { font-size: 30px; } }
+      /* Números */
+      .numeros {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .numero {
+        padding: 14px 16px;
+        border-radius: 16px;
+        border: 2px solid var(--line);
+      }
+      .numero .rotulo {
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .numero .valor {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+      .numero .extra {
+        font-size: 16px;
+        color: var(--muted);
+      }
+      .numero.destaque {
+        background: var(--brand-soft);
+        border-color: transparent;
+      }
+      @media (max-width: 480px) {
+        .numeros {
+          grid-template-columns: 1fr;
+        }
+        .numero .valor {
+          font-size: 30px;
+        }
+      }
 
-  /* Gráfico */
-  .grafico { position: relative; height: 320px; }
-  .legenda-limites { display: flex; gap: 16px; flex-wrap: wrap; font-size: 16px; color: var(--muted); margin-top: 8px; }
+      /* Gráfico */
+      .grafico {
+        position: relative;
+        height: 320px;
+      }
+      .legenda-limites {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 16px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
 
-  /* Eventos */
-  .eventos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; }
-  .eventos li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; border: 2px solid var(--line); }
-  .eventos .icone { width: 14px; height: 14px; border-radius: 999px; margin-top: 7px; flex-shrink: 0; background: var(--brand); }
-  .eventos .icone.atencao { background: var(--sol); }
-  .eventos .icone.perigo { background: var(--perigo); }
-  .eventos .icone.cinza { background: var(--muted); }
-  .eventos .texto { font-weight: 700; }
-  .eventos .quando { font-size: 15px; color: var(--muted); }
-  .eventos .atrasado { display: inline-block; margin-top: 4px; padding: 2px 10px; border-radius: 8px; background: var(--atencao-soft); font-size: 14px; font-weight: 700; }
-  .vazio { color: var(--muted); }
+      /* Eventos */
+      .eventos {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 420px;
+        overflow-y: auto;
+      }
+      .eventos li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 2px solid var(--line);
+      }
+      .eventos .icone {
+        width: 14px;
+        height: 14px;
+        border-radius: 999px;
+        margin-top: 7px;
+        flex-shrink: 0;
+        background: var(--brand);
+      }
+      .eventos .icone.atencao {
+        background: var(--sol);
+      }
+      .eventos .icone.perigo {
+        background: var(--perigo);
+      }
+      .eventos .icone.cinza {
+        background: var(--muted);
+      }
+      .eventos .texto {
+        font-weight: 700;
+      }
+      .eventos .quando {
+        font-size: 15px;
+        color: var(--muted);
+      }
+      .eventos .atrasado {
+        display: inline-block;
+        margin-top: 4px;
+        padding: 2px 10px;
+        border-radius: 8px;
+        background: var(--atencao-soft);
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .vazio {
+        color: var(--muted);
+      }
 
-  footer { margin-top: 20px; font-size: 15px; color: var(--muted); }
-</style>
-</head>
-<body>
-<div class="container">
+      footer {
+        margin-top: 20px;
+        font-size: 15px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="marca">
+          <svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true">
+            <path
+              d="M10 33 L32 13 L54 33"
+              fill="none"
+              stroke="var(--brand)"
+              stroke-width="7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M13 41 Q32 62 51 41"
+              fill="none"
+              stroke="var(--brand)"
+              stroke-width="7"
+              stroke-linecap="round"
+            />
+            <circle cx="32" cy="35" r="7" fill="var(--sol)" />
+          </svg>
+          <div>
+            <h1>Amparo</h1>
+            <span>Painel da família</span>
+          </div>
+        </div>
+        <span class="selo" id="seloPainel" role="status"
+          ><span class="ponto"></span
+          ><span id="textoPainel">Conectando ao Node-RED…</span></span
+        >
+        <span class="selo" id="seloAparelho" role="status"
+          ><span class="ponto"></span
+          ><span id="textoAparelho">Aguardando o aparelho…</span></span
+        >
+        <button class="botao" id="btnSom" aria-pressed="false">
+          Ativar som de alerta
+        </button>
+        <button class="botao" id="btnTema" aria-pressed="false">
+          Alto contraste
+        </button>
+      </header>
 
-  <header>
-    <div class="marca">
-      <svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true"><path d="M10 33 L32 13 L54 33" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 41 Q32 62 51 41" fill="none" stroke="var(--brand)" stroke-width="7" stroke-linecap="round"/><circle cx="32" cy="35" r="7" fill="var(--sol)"/></svg>
-      <div>
-        <h1>Amparo</h1>
-        <span>Painel da família</span>
-      </div>
-    </div>
-    <span class="selo" id="seloPainel" role="status"><span class="ponto"></span><span id="textoPainel">Conectando ao Node-RED…</span></span>
-    <span class="selo" id="seloAparelho" role="status"><span class="ponto"></span><span id="textoAparelho">Aguardando o aparelho…</span></span>
-    <button class="botao" id="btnSom" aria-pressed="false">Ativar som de alerta</button>
-    <button class="botao" id="btnTema" aria-pressed="false">Alto contraste</button>
-  </header>
-
-  <div class="faixa" id="faixa" role="alert">
-    <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24v-8a8 8 0 0 1 16 0v8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M5 24h22M16 4v3M6 9l2 2M26 9l-2 2" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
-    <div>
-      <strong id="faixaTitulo">Pedido de ajuda</strong>
-      <span id="faixaTexto">A Dona Maria pediu ajuda.</span>
-    </div>
-    <div class="acoes">
-      <a class="botao" href="tel:00000000000">Ligar para ela</a>
-      <a class="botao" href="tel:192">Ligar 192</a>
-      <button class="botao" id="btnCiente">Estou ciente</button>
-    </div>
-  </div>
-
-  <main class="grade">
-    <section class="cartao col-5 estado" id="cartaoEstado" data-nivel="NORMAL" aria-labelledby="tEstado">
-      <h2 id="tEstado" class="pessoa">
-        <span class="avatar" aria-hidden="true">M</span>
-        <span>Dona Maria <span style="display:block;font-size:16px;color:var(--muted)">Mãe · Vila Nova</span></span>
-      </h2>
-      <div class="nivel">
-        <svg id="iconeNivel" width="56" height="56" viewBox="0 0 20 20" aria-hidden="true"></svg>
+      <div class="faixa" id="faixa" role="alert">
+        <svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true">
+          <path
+            d="M8 24v-8a8 8 0 0 1 16 0v8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            d="M5 24h22M16 4v3M6 9l2 2M26 9l-2 2"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
         <div>
-          <span class="etiqueta" id="etiquetaNivel">NORMAL</span>
-          <p class="titulo" id="tituloNivel">Aguardando dados</p>
-          <p class="msg" id="msgNivel">O painel atualiza sozinho quando o aparelho envia uma leitura.</p>
+          <strong id="faixaTitulo">Pedido de ajuda</strong>
+          <span id="faixaTexto">A Dona Maria pediu ajuda.</span>
+        </div>
+        <div class="acoes">
+          <a class="botao" href="tel:00000000000">Ligar para ela</a>
+          <a class="botao" href="tel:192">Ligar 192</a>
+          <button class="botao" id="btnACaminho">Estou indo</button>
+          <button class="botao" id="btnCiente">Estou ciente</button>
         </div>
       </div>
-      <p class="atualizado" id="atualizado">Nenhuma leitura ainda.</p>
-      <div class="acoes-estado">
-        <a class="botao primario" href="tel:00000000000">Ligar para ela</a>
-        <a class="botao perigo" href="tel:192">Ligar 192</a>
-      </div>
-    </section>
 
-    <section class="cartao col-7" aria-labelledby="tNumeros">
-      <h2 id="tNumeros">Agora na casa dela</h2>
-      <div class="numeros">
-        <div class="numero"><div class="rotulo">Temperatura</div><div class="valor" id="vTemp">–</div><div class="extra" id="vUmid">Umidade –</div></div>
-        <div class="numero"><div class="rotulo">Sensação térmica</div><div class="valor" id="vIc">–</div><div class="extra">Índice de calor (NOAA)</div></div>
-        <div class="numero"><div class="rotulo">Previsão para 1 hora</div><div class="valor" id="vProj">–</div><div class="extra" id="vTaxa">Ritmo –</div></div>
-        <div class="numero destaque"><div class="rotulo">Exposição ao calor</div><div class="valor" id="vGh">–</div><div class="extra">graus-hora acima de 32 °C</div></div>
-      </div>
-    </section>
+      <main class="grade">
+        <section
+          class="cartao col-5 estado"
+          id="cartaoEstado"
+          data-nivel="NORMAL"
+          aria-labelledby="tEstado"
+        >
+          <h2 id="tEstado" class="pessoa">
+            <span class="avatar" aria-hidden="true">M</span>
+            <span
+              >Dona Maria
+              <span style="display: block; font-size: 16px; color: var(--muted)"
+                >Mãe · Vila Nova</span
+              ></span
+            >
+          </h2>
+          <div class="nivel">
+            <svg
+              id="iconeNivel"
+              width="56"
+              height="56"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
+            ></svg>
+            <div>
+              <span class="etiqueta" id="etiquetaNivel">NORMAL</span>
+              <p class="titulo" id="tituloNivel">Aguardando dados</p>
+              <p class="msg" id="msgNivel">
+                O painel atualiza sozinho quando o aparelho envia uma leitura.
+              </p>
+            </div>
+          </div>
+          <p class="atualizado" id="atualizado">Nenhuma leitura ainda.</p>
+          <div class="acoes-estado">
+            <a class="botao primario" href="tel:00000000000">Ligar para ela</a>
+            <a class="botao perigo" href="tel:192">Ligar 192</a>
+          </div>
+        </section>
 
-    <section class="cartao col-8" aria-labelledby="tGrafico">
-      <h2 id="tGrafico">Sensação térmica ao longo do tempo</h2>
-      <div class="grafico"><canvas id="grafico" role="img" aria-label="Gráfico da temperatura e da sensação térmica na casa ao longo do tempo, com as linhas de atenção (32 graus) e perigo (39 graus)."></canvas></div>
-      <div class="legenda-limites">
-        <span>– – Atenção a partir de 32 °C</span>
-        <span>– – Perigo a partir de 39 °C</span>
-      </div>
-    </section>
+        <section class="cartao col-7" aria-labelledby="tNumeros">
+          <h2 id="tNumeros">Agora na casa dela</h2>
+          <div class="numeros">
+            <div class="numero">
+              <div class="rotulo">Temperatura</div>
+              <div class="valor" id="vTemp">–</div>
+              <div class="extra" id="vUmid">Umidade –</div>
+            </div>
+            <div class="numero">
+              <div class="rotulo">Sensação térmica</div>
+              <div class="valor" id="vIc">–</div>
+              <div class="extra">Índice de calor (NOAA)</div>
+            </div>
+            <div class="numero">
+              <div class="rotulo">Previsão para 1 hora</div>
+              <div class="valor" id="vProj">–</div>
+              <div class="extra" id="vTaxa">Ritmo –</div>
+            </div>
+            <div class="numero destaque">
+              <div class="rotulo">Exposição ao calor</div>
+              <div class="valor" id="vGh">–</div>
+              <div class="extra">graus-hora acima de 32 °C</div>
+            </div>
+          </div>
+        </section>
 
-    <section class="cartao col-4" aria-labelledby="tEventos">
-      <h2 id="tEventos">Últimos avisos</h2>
-      <ul class="eventos" id="listaEventos" aria-live="polite">
-        <li class="vazio">Nenhum aviso ainda.</li>
-      </ul>
-    </section>
-  </main>
+        <section class="cartao col-8" aria-labelledby="tGrafico">
+          <h2 id="tGrafico">Sensação térmica ao longo do tempo</h2>
+          <div class="grafico">
+            <canvas
+              id="grafico"
+              role="img"
+              aria-label="Gráfico da temperatura e da sensação térmica na casa ao longo do tempo, com as linhas de atenção (32 graus) e perigo (39 graus)."
+            ></canvas>
+          </div>
+          <div class="legenda-limites">
+            <span>– – Atenção a partir de 32 °C</span>
+            <span>– – Perigo a partir de 39 °C</span>
+          </div>
+        </section>
 
-  <footer>
-    Dados simulados para o protótipo (Global Solution · FIAP). Aparelho ESP32 → MQTT (HiveMQ) → Node-RED → este painel.
-  </footer>
-</div>
+        <section class="cartao col-4" aria-labelledby="tEventos">
+          <h2 id="tEventos">Últimos avisos</h2>
+          <ul class="eventos" id="listaEventos" aria-live="polite">
+            <li class="vazio">Nenhum aviso ainda.</li>
+          </ul>
+        </section>
+      </main>
 
-<script>
-  // ------------------------------------------------------------
-  // Configuração: o painel é servido pelo próprio Node-RED.
-  // Se o arquivo for aberto direto do computador, usa o Node-RED local.
-  // ------------------------------------------------------------
-  const BASE = location.protocol.startsWith('http') ? location.origin : 'http://localhost:1880';
-  const URL_HISTORICO = BASE + '/amparo/historico';
-  const URL_WS = BASE.replace(/^http/, 'ws') + '/ws/amparo';
-  const LIMITE_ATENCAO = 32, LIMITE_PERIGO = 39;
-  const SEGUNDOS_APARELHO_OFFLINE = 30;  // sem leitura há mais tempo = aparelho sem conexão
-  const MAX_PONTOS = 120;
+      <footer>
+        Dados simulados para o protótipo (Global Solution · FIAP). Aparelho
+        ESP32 → MQTT (FIWARE) → Node-RED → este painel.
+      </footer>
+    </div>
 
-  const $ = (id) => document.getElementById(id);
-  let ultimaLeitura = null;
-  let somAtivo = false;
-  let audioCtx = null;
-  let timerSom = null;
+    <script>
+      // ------------------------------------------------------------
+      // Configuração: o painel é servido pelo próprio Node-RED.
+      // Se o arquivo for aberto direto do computador, usa o Node-RED local.
+      // ------------------------------------------------------------
+      const BASE = location.protocol.startsWith("http")
+        ? location.origin
+        : "http://localhost:1880";
+      const URL_HISTORICO = BASE + "/amparo/historico";
+      const URL_AJUDA = BASE + "/amparo/ajuda";
+      const URL_WS = BASE.replace(/^http/, "ws") + "/ws/amparo";
+      const LIMITE_ATENCAO = 32,
+        LIMITE_PERIGO = 39;
+      const SEGUNDOS_APARELHO_OFFLINE = 30; // sem leitura há mais tempo = aparelho sem conexão
+      const MAX_PONTOS = 120;
 
-  // ---------------- Textos de cada estado ----------------
-  const ESTADOS = {
-    NORMAL:       { etiqueta: 'NORMAL',       titulo: 'Está tudo bem',              msg: 'A temperatura na casa está tranquila.' },
-    ATENCAO:      { etiqueta: 'ATENÇÃO',      titulo: 'Calor subindo',              msg: 'O aparelho pediu para ela beber água e ir para o lugar mais fresco.' },
-    PERIGO:       { etiqueta: 'PERIGO',       titulo: 'Calor perigoso na casa',     msg: 'O aparelho está pedindo para ela confirmar que está bem.' },
-    SEM_RESPOSTA: { etiqueta: 'SEM RESPOSTA', titulo: 'Ela não respondeu ao alerta', msg: 'Ligue para ela ou chame alguém que esteja perto.' },
-    SOS:          { etiqueta: 'AJUDA PEDIDA', titulo: 'Ela pediu ajuda',            msg: 'Ligue para ela agora ou chame o 192.' },
-    ERRO_SENSOR:  { etiqueta: 'VERIFICAR',    titulo: 'Sensor com problema',        msg: 'O aparelho não está conseguindo medir a temperatura.' }
-  };
+      const $ = (id) => document.getElementById(id);
+      let ultimaLeitura = null;
+      let somAtivo = false;
+      let audioCtx = null;
+      let timerSom = null;
 
-  const ICONES = {
-    NORMAL:  '<circle cx="10" cy="10" r="8" fill="none" stroke="var(--brand)" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/>',
-    ATENCAO: '<path d="M10 2l9 16H1z" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M10 8v4M10 15v.5" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>',
-    PERIGO:  '<path d="M6.5 1.5h7l5 5v7l-5 5h-7l-5-5v-7z" fill="none" stroke="var(--perigo)" stroke-width="2" stroke-linejoin="round"/><path d="M10 6v5M10 14v.5" stroke="var(--perigo)" stroke-width="2" stroke-linecap="round"/>',
-    ERRO_SENSOR: '<circle cx="10" cy="10" r="8" fill="none" stroke="var(--muted)" stroke-width="2"/><path d="M10 5v6M10 14v.5" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/>'
-  };
-  ICONES.SEM_RESPOSTA = ICONES.PERIGO;
-  ICONES.SOS = ICONES.PERIGO;
+      // ---------------- Textos de cada estado ----------------
+      const ESTADOS = {
+        NORMAL: {
+          etiqueta: "NORMAL",
+          titulo: "Está tudo bem",
+          msg: "A temperatura na casa está tranquila.",
+        },
+        ATENCAO: {
+          etiqueta: "ATENÇÃO",
+          titulo: "Calor subindo",
+          msg: "O aparelho pediu para ela beber água e ir para o lugar mais fresco.",
+        },
+        PERIGO: {
+          etiqueta: "PERIGO",
+          titulo: "Calor perigoso na casa",
+          msg: "O aparelho está pedindo para ela confirmar que está bem.",
+        },
+        SEM_RESPOSTA: {
+          etiqueta: "SEM RESPOSTA",
+          titulo: "Ela não respondeu ao alerta",
+          msg: "Ligue para ela ou chame alguém que esteja perto.",
+        },
+        SOS: {
+          etiqueta: "AJUDA PEDIDA",
+          titulo: "Ela pediu ajuda",
+          msg: "Ligue para ela agora ou chame o 192.",
+        },
+        ERRO_SENSOR: {
+          etiqueta: "VERIFICAR",
+          titulo: "Sensor com problema",
+          msg: "O aparelho não está conseguindo medir a temperatura.",
+        },
+      };
 
-  const EVENTOS = {
-    normal:       { texto: 'Voltou ao normal',              cor: '' },
-    atencao:      { texto: 'Atenção: calor subindo',        cor: 'atencao' },
-    perigo:       { texto: 'Perigo: calor perigoso',        cor: 'perigo' },
-    sem_resposta: { texto: 'Não respondeu ao alerta',       cor: 'perigo' },
-    sos:          { texto: 'Pediu ajuda (botão vermelho)',  cor: 'perigo' },
-    ok:           { texto: 'Confirmou que está bem',        cor: '' },
-    erro_sensor:  { texto: 'Sensor com problema',           cor: 'cinza' },
-    sensor_ok:    { texto: 'Sensor voltou a funcionar',     cor: '' }
-  };
+      const ICONES = {
+        NORMAL:
+          '<circle cx="10" cy="10" r="8" fill="none" stroke="var(--brand)" stroke-width="2"/><path d="M6 10l3 3 5-6" fill="none" stroke="var(--brand)" stroke-width="2" stroke-linecap="round"/>',
+        ATENCAO:
+          '<path d="M10 2l9 16H1z" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/><path d="M10 8v4M10 15v.5" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/>',
+        PERIGO:
+          '<path d="M6.5 1.5h7l5 5v7l-5 5h-7l-5-5v-7z" fill="none" stroke="var(--perigo)" stroke-width="2" stroke-linejoin="round"/><path d="M10 6v5M10 14v.5" stroke="var(--perigo)" stroke-width="2" stroke-linecap="round"/>',
+        ERRO_SENSOR:
+          '<circle cx="10" cy="10" r="8" fill="none" stroke="var(--muted)" stroke-width="2"/><path d="M10 5v6M10 14v.5" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/>',
+      };
+      ICONES.SEM_RESPOSTA = ICONES.PERIGO;
+      ICONES.SOS = ICONES.PERIGO;
 
-  // ---------------- Formatação ----------------
-  const graus = (v) => (v === undefined || v === null || isNaN(v)) ? '–' : v.toFixed(1).replace('.', ',') + ' °C';
-  const hora = (ms) => new Date(ms).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const EVENTOS = {
+        normal: { texto: "Voltou ao normal", cor: "" },
+        atencao: { texto: "Atenção: calor subindo", cor: "atencao" },
+        perigo: { texto: "Perigo: calor perigoso", cor: "perigo" },
+        sem_resposta: { texto: "Não respondeu ao alerta", cor: "perigo" },
+        sos: { texto: "Pediu ajuda (botão vermelho)", cor: "perigo" },
+        ok: { texto: "Confirmou que está bem", cor: "" },
+        erro_sensor: { texto: "Sensor com problema", cor: "cinza" },
+        sensor_ok: { texto: "Sensor voltou a funcionar", cor: "" },
+        ajuda: { texto: "Aparelho avisou: ajuda a caminho", cor: "" },
+      };
 
-  // ---------------- Gráfico ----------------
-  const css = (nome) => getComputedStyle(document.documentElement).getPropertyValue(nome).trim();
-  // Se a biblioteca de gráficos não carregar (sem internet), o painel continua funcionando sem o gráfico
-  const temGrafico = typeof Chart !== 'undefined';
-  if (!temGrafico) {
-    document.querySelector('.grafico').innerHTML = '<p class="vazio">O gráfico precisa de internet para carregar. Os outros dados continuam atualizando.</p>';
-  }
-  const grafico = temGrafico ? new Chart($('grafico'), {
-    type: 'line',
-    data: { labels: [], datasets: [
-      { label: 'Sensação térmica', data: [], borderWidth: 3, tension: .3, pointRadius: 0 },
-      { label: 'Temperatura', data: [], borderWidth: 2, tension: .3, pointRadius: 0 },
-      { label: 'Atenção (32 °C)', data: [], borderWidth: 2, borderDash: [6, 6], pointRadius: 0 },
-      { label: 'Perigo (39 °C)', data: [], borderWidth: 2, borderDash: [6, 6], pointRadius: 0 }
-    ]},
-    options: {
-      responsive: true, maintainAspectRatio: false, animation: false,
-      interaction: { mode: 'index', intersect: false },
-      scales: {
-        y: { suggestedMin: 22, suggestedMax: 45, title: { display: true, text: '°C' } },
-        x: { ticks: { maxTicksLimit: 8 } }
-      },
-      plugins: { legend: { labels: { font: { size: 14 } } } }
-    }
-  }) : { data: { labels: [], datasets: [{data:[]},{data:[]},{data:[]},{data:[]}] }, options: { scales: { x: { ticks: {} }, y: {} } }, update() {} };
+      // ---------------- Formatação ----------------
+      const graus = (v) =>
+        v === undefined || v === null || isNaN(v)
+          ? "–"
+          : v.toFixed(1).replace(".", ",") + " °C";
+      const hora = (ms) =>
+        new Date(ms).toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
 
-  function aplicarCoresGrafico() {
-    if (!temGrafico) return;
-    const [sens, temp, aten, per] = grafico.data.datasets;
-    sens.borderColor = css('--perigo'); temp.borderColor = css('--brand');
-    aten.borderColor = css('--sol'); per.borderColor = css('--perigo');
-    [sens, temp, aten, per].forEach(ds => ds.backgroundColor = ds.borderColor);  // legenda com a mesma cor da linha
-    Chart.defaults.color = css('--ink');
-    grafico.options.scales.x.grid = { color: css('--line') + '33' };
-    grafico.options.scales.y.grid = { color: css('--line') + '33' };
-    grafico.options.scales.x.ticks.color = css('--ink');
-    grafico.options.scales.y.ticks = { color: css('--ink') };
-    grafico.update();
-  }
+      // ---------------- Gráfico ----------------
+      const css = (nome) =>
+        getComputedStyle(document.documentElement)
+          .getPropertyValue(nome)
+          .trim();
+      // Se a biblioteca de gráficos não carregar (sem internet), o painel continua funcionando sem o gráfico
+      const temGrafico = typeof Chart !== "undefined";
+      if (!temGrafico) {
+        document.querySelector(".grafico").innerHTML =
+          '<p class="vazio">O gráfico precisa de internet para carregar. Os outros dados continuam atualizando.</p>';
+      }
+      const grafico = temGrafico
+        ? new Chart($("grafico"), {
+            type: "line",
+            data: {
+              labels: [],
+              datasets: [
+                {
+                  label: "Sensação térmica",
+                  data: [],
+                  borderWidth: 3,
+                  tension: 0.3,
+                  pointRadius: 0,
+                },
+                {
+                  label: "Temperatura",
+                  data: [],
+                  borderWidth: 2,
+                  tension: 0.3,
+                  pointRadius: 0,
+                },
+                {
+                  label: "Atenção (32 °C)",
+                  data: [],
+                  borderWidth: 2,
+                  borderDash: [6, 6],
+                  pointRadius: 0,
+                },
+                {
+                  label: "Perigo (39 °C)",
+                  data: [],
+                  borderWidth: 2,
+                  borderDash: [6, 6],
+                  pointRadius: 0,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              animation: false,
+              interaction: { mode: "index", intersect: false },
+              scales: {
+                y: {
+                  suggestedMin: 22,
+                  suggestedMax: 45,
+                  title: { display: true, text: "°C" },
+                },
+                x: { ticks: { maxTicksLimit: 8 } },
+              },
+              plugins: { legend: { labels: { font: { size: 14 } } } },
+            },
+          })
+        : {
+            data: {
+              labels: [],
+              datasets: [
+                { data: [] },
+                { data: [] },
+                { data: [] },
+                { data: [] },
+              ],
+            },
+            options: { scales: { x: { ticks: {} }, y: {} } },
+            update() {},
+          };
 
-  function adicionarPonto(d) {
-    const g = grafico.data;
-    g.labels.push(hora(d.recebidoEm || Date.now()));
-    g.datasets[0].data.push(d.ic);
-    g.datasets[1].data.push(d.temp);
-    g.datasets[2].data.push(LIMITE_ATENCAO);
-    g.datasets[3].data.push(LIMITE_PERIGO);
-    if (g.labels.length > MAX_PONTOS) { g.labels.shift(); g.datasets.forEach(ds => ds.data.shift()); }
-  }
+      function aplicarCoresGrafico() {
+        if (!temGrafico) return;
+        const [sens, temp, aten, per] = grafico.data.datasets;
+        sens.borderColor = css("--perigo");
+        temp.borderColor = css("--brand");
+        aten.borderColor = css("--sol");
+        per.borderColor = css("--perigo");
+        [sens, temp, aten, per].forEach(
+          (ds) => (ds.backgroundColor = ds.borderColor),
+        ); // legenda com a mesma cor da linha
+        Chart.defaults.color = css("--ink");
+        grafico.options.scales.x.grid = { color: css("--line") + "33" };
+        grafico.options.scales.y.grid = { color: css("--line") + "33" };
+        grafico.options.scales.x.ticks.color = css("--ink");
+        grafico.options.scales.y.ticks = { color: css("--ink") };
+        grafico.update();
+      }
 
-  // ---------------- Atualização da tela ----------------
-  function mostrarLeitura(d, atualizarGrafico = true) {
-    ultimaLeitura = d;
-    const estado = ESTADOS[d.estado] ? d.estado : 'NORMAL';
-    const info = ESTADOS[estado];
-    $('cartaoEstado').dataset.nivel = estado;
-    $('etiquetaNivel').textContent = info.etiqueta;
-    $('tituloNivel').textContent = info.titulo;
-    $('msgNivel').textContent = info.msg;
-    $('iconeNivel').innerHTML = ICONES[estado];
-    $('atualizado').textContent = 'Última leitura às ' + hora(d.recebidoEm || Date.now());
+      function adicionarPonto(d) {
+        const g = grafico.data;
+        g.labels.push(hora(d.recebidoEm || Date.now()));
+        g.datasets[0].data.push(d.ic);
+        g.datasets[1].data.push(d.temp);
+        g.datasets[2].data.push(LIMITE_ATENCAO);
+        g.datasets[3].data.push(LIMITE_PERIGO);
+        if (g.labels.length > MAX_PONTOS) {
+          g.labels.shift();
+          g.datasets.forEach((ds) => ds.data.shift());
+        }
+      }
 
-    $('vTemp').textContent = graus(d.temp);
-    $('vUmid').textContent = 'Umidade ' + (isNaN(d.umid) ? '–' : Math.round(d.umid) + '%');
-    $('vIc').textContent = graus(d.ic);
-    $('vProj').textContent = graus(d.icProjetado);
-    const taxa = Number(d.taxa) || 0;
-    $('vTaxa').textContent = taxa > 0.05 ? 'Esquentando ' + taxa.toFixed(1).replace('.', ',') + ' °C por hora'
-                           : taxa < -0.05 ? 'Esfriando ' + Math.abs(taxa).toFixed(1).replace('.', ',') + ' °C por hora'
-                           : 'Temperatura estável';
-    $('vGh').textContent = isNaN(d.grausHora) ? '–' : Number(d.grausHora).toFixed(1).replace('.', ',');
+      // ---------------- Atualização da tela ----------------
+      function mostrarLeitura(d, atualizarGrafico = true) {
+        ultimaLeitura = d;
+        const estado = ESTADOS[d.estado] ? d.estado : "NORMAL";
+        const info = ESTADOS[estado];
+        $("cartaoEstado").dataset.nivel = estado;
+        $("etiquetaNivel").textContent = info.etiqueta;
+        $("tituloNivel").textContent = info.titulo;
+        $("msgNivel").textContent = info.msg;
+        $("iconeNivel").innerHTML = ICONES[estado];
+        $("atualizado").textContent =
+          "Última leitura às " + hora(d.recebidoEm || Date.now());
 
-    if (atualizarGrafico) { adicionarPonto(d); grafico.update(); }
-    if (estado === 'SOS' || estado === 'SEM_RESPOSTA') mostrarFaixa(estado);
-    else esconderFaixa();
-    verificarAparelho();
-  }
+        $("vTemp").textContent = graus(d.temp);
+        $("vUmid").textContent =
+          "Umidade " + (isNaN(d.umid) ? "–" : Math.round(d.umid) + "%");
+        $("vIc").textContent = graus(d.ic);
+        $("vProj").textContent = graus(d.icProjetado);
+        const taxa = Number(d.taxa) || 0;
+        $("vTaxa").textContent =
+          taxa > 0.05
+            ? "Esquentando " +
+              taxa.toFixed(1).replace(".", ",") +
+              " °C por hora"
+            : taxa < -0.05
+              ? "Esfriando " +
+                Math.abs(taxa).toFixed(1).replace(".", ",") +
+                " °C por hora"
+              : "Temperatura estável";
+        $("vGh").textContent = isNaN(d.grausHora)
+          ? "–"
+          : Number(d.grausHora).toFixed(1).replace(".", ",");
 
-  function adicionarEvento(e, noTopo = true) {
-    const lista = $('listaEventos');
-    const vazio = lista.querySelector('.vazio');
-    if (vazio) vazio.remove();
-    const info = EVENTOS[e.evento] || { texto: e.evento, cor: 'cinza' };
-    const li = document.createElement('li');
-    li.innerHTML =
-      '<span class="icone ' + info.cor + '" aria-hidden="true"></span>' +
-      '<div><div class="texto"></div><div class="quando"></div>' +
-      (e.atrasado ? '<span class="atrasado">Enviado depois: o aparelho estava sem internet</span>' : '') +
-      '</div>';
-    li.querySelector('.texto').textContent = info.texto;
-    li.querySelector('.quando').textContent = 'Às ' + hora(e.quando || Date.now()) +
-      (e.ic ? ' · sensação ' + graus(e.ic) : '');
-    noTopo ? lista.prepend(li) : lista.append(li);
-    while (lista.children.length > 30) lista.lastChild.remove();
+        if (atualizarGrafico) {
+          adicionarPonto(d);
+          grafico.update();
+        }
+        if (estado === "SOS" || estado === "SEM_RESPOSTA") mostrarFaixa(estado);
+        else esconderFaixa();
+        verificarAparelho();
+      }
 
-    if (noTopo && (e.evento === 'sos' || e.evento === 'sem_resposta')) mostrarFaixa(e.evento === 'sos' ? 'SOS' : 'SEM_RESPOSTA');
-  }
+      function adicionarEvento(e, noTopo = true) {
+        const lista = $("listaEventos");
+        const vazio = lista.querySelector(".vazio");
+        if (vazio) vazio.remove();
+        const info = EVENTOS[e.evento] || { texto: e.evento, cor: "cinza" };
+        const li = document.createElement("li");
+        li.innerHTML =
+          '<span class="icone ' +
+          info.cor +
+          '" aria-hidden="true"></span>' +
+          '<div><div class="texto"></div><div class="quando"></div>' +
+          (e.atrasado
+            ? '<span class="atrasado">Enviado depois: o aparelho estava sem internet</span>'
+            : "") +
+          "</div>";
+        li.querySelector(".texto").textContent = info.texto;
+        li.querySelector(".quando").textContent =
+          "Às " +
+          hora(e.quando || Date.now()) +
+          (e.ic ? " · sensação " + graus(e.ic) : "");
+        noTopo ? lista.prepend(li) : lista.append(li);
+        while (lista.children.length > 30) lista.lastChild.remove();
 
-  // ---------------- Faixa de alerta e som ----------------
-  function mostrarFaixa(estado) {
-    const faixa = $('faixa');
-    if (faixa.dataset.ciente === estado) return;     // a família já viu este alerta
-    $('faixaTitulo').textContent = estado === 'SOS' ? 'Pedido de ajuda' : 'Sem resposta ao alerta';
-    $('faixaTexto').textContent = estado === 'SOS'
-      ? 'A Dona Maria apertou o botão de ajuda.'
-      : 'A Dona Maria não confirmou que está bem durante o calor perigoso.';
-    faixa.classList.add('ativa');
-    tocarAlarme(true);
-  }
-  function esconderFaixa() {
-    $('faixa').classList.remove('ativa');
-    $('faixa').dataset.ciente = '';
-    tocarAlarme(false);
-  }
-  $('btnCiente').onclick = () => {
-    $('faixa').dataset.ciente = ultimaLeitura ? ultimaLeitura.estado : 'SOS';
-    $('faixa').classList.remove('ativa');
-    tocarAlarme(false);
-  };
+        if (noTopo && (e.evento === "sos" || e.evento === "sem_resposta"))
+          mostrarFaixa(e.evento === "sos" ? "SOS" : "SEM_RESPOSTA");
+      }
 
-  function bipe() {
-    if (!audioCtx) return;
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.frequency.value = 1800; g.gain.value = 0.15;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + 0.25);
-  }
-  function tocarAlarme(ligar) {
-    clearInterval(timerSom); timerSom = null;
-    if (ligar && somAtivo) { bipe(); timerSom = setInterval(bipe, 1000); }
-  }
-  $('btnSom').onclick = () => {
-    somAtivo = !somAtivo;
-    if (somAtivo && !audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    $('btnSom').setAttribute('aria-pressed', somAtivo);
-    $('btnSom').textContent = somAtivo ? 'Som de alerta ligado' : 'Ativar som de alerta';
-    if (somAtivo) bipe();
-  };
+      // ---------------- Faixa de alerta e som ----------------
+      function mostrarFaixa(estado) {
+        const faixa = $("faixa");
+        if (faixa.dataset.ciente === estado) return; // a família já viu este alerta
+        $("faixaTitulo").textContent =
+          estado === "SOS" ? "Pedido de ajuda" : "Sem resposta ao alerta";
+        $("faixaTexto").textContent =
+          estado === "SOS"
+            ? "A Dona Maria apertou o botão de ajuda."
+            : "A Dona Maria não confirmou que está bem durante o calor perigoso.";
+        faixa.classList.add("ativa");
+        tocarAlarme(true);
+      }
+      function esconderFaixa() {
+        $("faixa").classList.remove("ativa");
+        $("faixa").dataset.ciente = "";
+        tocarAlarme(false);
+      }
+      // Envia o comando "ajuda" ao aparelho (Node-RED -> MQTT /TEF/amparo001/cmd)
+      $("btnACaminho").onclick = async () => {
+        const b = $("btnACaminho");
+        b.disabled = true;
+        b.textContent = "Enviando...";
+        try {
+          const r = await fetch(URL_AJUDA, { method: "POST" });
+          b.textContent = r.ok ? "Aviso enviado" : "Falhou, tente de novo";
+        } catch (err) {
+          b.textContent = "Falhou, tente de novo";
+        }
+        setTimeout(() => {
+          b.disabled = false;
+          b.textContent = "Estou indo";
+        }, 4000);
+      };
+      $("btnCiente").onclick = () => {
+        $("faixa").dataset.ciente = ultimaLeitura
+          ? ultimaLeitura.estado
+          : "SOS";
+        $("faixa").classList.remove("ativa");
+        tocarAlarme(false);
+      };
 
-  // ---------------- Alto contraste ----------------
-  $('btnTema').onclick = () => {
-    const ativo = document.documentElement.dataset.tema === 'contraste';
-    document.documentElement.dataset.tema = ativo ? '' : 'contraste';
-    $('btnTema').setAttribute('aria-pressed', !ativo);
-    aplicarCoresGrafico();
-  };
+      function bipe() {
+        if (!audioCtx) return;
+        const o = audioCtx.createOscillator(),
+          g = audioCtx.createGain();
+        o.frequency.value = 1800;
+        g.gain.value = 0.15;
+        o.connect(g);
+        g.connect(audioCtx.destination);
+        o.start();
+        o.stop(audioCtx.currentTime + 0.25);
+      }
+      function tocarAlarme(ligar) {
+        clearInterval(timerSom);
+        timerSom = null;
+        if (ligar && somAtivo) {
+          bipe();
+          timerSom = setInterval(bipe, 1000);
+        }
+      }
+      $("btnSom").onclick = () => {
+        somAtivo = !somAtivo;
+        if (somAtivo && !audioCtx)
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        $("btnSom").setAttribute("aria-pressed", somAtivo);
+        $("btnSom").textContent = somAtivo
+          ? "Som de alerta ligado"
+          : "Ativar som de alerta";
+        if (somAtivo) bipe();
+      };
 
-  // ---------------- Situação das conexões ----------------
-  function selo(id, textoId, classe, texto) {
-    $(id).className = 'selo ' + classe;
-    $(textoId).textContent = texto;
-  }
-  function verificarAparelho() {
-    if (!ultimaLeitura) return;
-    const seg = Math.round((Date.now() - (ultimaLeitura.recebidoEm || Date.now())) / 1000);
-    if (seg > SEGUNDOS_APARELHO_OFFLINE) {
-      selo('seloAparelho', 'textoAparelho', 'erro', 'Aparelho sem conexão há ' + seg + ' s (ele continua alertando em casa)');
-    } else {
-      selo('seloAparelho', 'textoAparelho', 'ok', 'Aparelho conectado');
-    }
-  }
-  setInterval(verificarAparelho, 5000);
+      // ---------------- Alto contraste ----------------
+      $("btnTema").onclick = () => {
+        const ativo = document.documentElement.dataset.tema === "contraste";
+        document.documentElement.dataset.tema = ativo ? "" : "contraste";
+        $("btnTema").setAttribute("aria-pressed", !ativo);
+        aplicarCoresGrafico();
+      };
 
-  // ---------------- Dados: histórico + tempo real ----------------
-  async function carregarHistorico() {
-    try {
-      const r = await fetch(URL_HISTORICO);
-      const dados = await r.json();
-      (dados.historico || []).forEach(d => adicionarPonto(d));
-      grafico.update();
-      const h = dados.historico || [];
-      if (h.length) mostrarLeitura(h[h.length - 1], false);
-      (dados.eventos || []).slice().reverse().forEach(e => adicionarEvento(e, true));
-      esconderFaixa();
-      if (h.length && (h[h.length - 1].estado === 'SOS' || h[h.length - 1].estado === 'SEM_RESPOSTA')) mostrarFaixa(h[h.length - 1].estado);
-    } catch (e) {
-      console.log('Sem histórico ainda', e);
-    }
-  }
+      // ---------------- Situação das conexões ----------------
+      function selo(id, textoId, classe, texto) {
+        $(id).className = "selo " + classe;
+        $(textoId).textContent = texto;
+      }
+      function verificarAparelho() {
+        if (!ultimaLeitura) return;
+        const seg = Math.round(
+          (Date.now() - (ultimaLeitura.recebidoEm || Date.now())) / 1000,
+        );
+        if (seg > SEGUNDOS_APARELHO_OFFLINE) {
+          selo(
+            "seloAparelho",
+            "textoAparelho",
+            "erro",
+            "Aparelho sem conexão há " +
+              seg +
+              " s (ele continua alertando em casa)",
+          );
+        } else {
+          selo("seloAparelho", "textoAparelho", "ok", "Aparelho conectado");
+        }
+      }
+      setInterval(verificarAparelho, 5000);
 
-  function conectar() {
-    const ws = new WebSocket(URL_WS);
-    ws.onopen = () => selo('seloPainel', 'textoPainel', 'ok', 'Painel conectado');
-    ws.onclose = () => {
-      selo('seloPainel', 'textoPainel', 'erro', 'Painel desconectado · tentando de novo');
-      setTimeout(conectar, 3000);
-    };
-    ws.onmessage = (m) => {
-      let msg;
-      try { msg = JSON.parse(m.data); } catch (e) { return; }
-      if (msg.tipo === 'leitura') mostrarLeitura(msg.dados);
-      if (msg.tipo === 'evento') adicionarEvento(msg.dados);
-    };
-  }
+      // ---------------- Dados: histórico + tempo real ----------------
+      async function carregarHistorico() {
+        try {
+          const r = await fetch(URL_HISTORICO);
+          const dados = await r.json();
+          (dados.historico || []).forEach((d) => adicionarPonto(d));
+          grafico.update();
+          const h = dados.historico || [];
+          if (h.length) mostrarLeitura(h[h.length - 1], false);
+          (dados.eventos || [])
+            .slice()
+            .reverse()
+            .forEach((e) => adicionarEvento(e, true));
+          esconderFaixa();
+          if (
+            h.length &&
+            (h[h.length - 1].estado === "SOS" ||
+              h[h.length - 1].estado === "SEM_RESPOSTA")
+          )
+            mostrarFaixa(h[h.length - 1].estado);
+        } catch (e) {
+          console.log("Sem histórico ainda", e);
+        }
+      }
 
-  aplicarCoresGrafico();
-  carregarHistorico().then(conectar);
-</script>
-</body>
+      function conectar() {
+        const ws = new WebSocket(URL_WS);
+        ws.onopen = () =>
+          selo("seloPainel", "textoPainel", "ok", "Painel conectado");
+        ws.onclose = () => {
+          selo(
+            "seloPainel",
+            "textoPainel",
+            "erro",
+            "Painel desconectado · tentando de novo",
+          );
+          setTimeout(conectar, 3000);
+        };
+        ws.onmessage = (m) => {
+          let msg;
+          try {
+            msg = JSON.parse(m.data);
+          } catch (e) {
+            return;
+          }
+          if (msg.tipo === "leitura") mostrarLeitura(msg.dados);
+          if (msg.tipo === "evento") adicionarEvento(msg.dados);
+        };
+      }
+
+      aplicarCoresGrafico();
+      carregarHistorico().then(conectar);
+    </script>
+  </body>
 </html>
