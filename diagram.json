@@ -17,7 +17,7 @@
       "id": "dht1",
       "top": -143.7,
       "left": 23.4,
-      "attrs": { "temperature": "44.8", "humidity": "50" }
+      "attrs": { "temperature": "25.0", "humidity": "50" }
     },
     { "type": "wokwi-slide-switch", "id": "sw1", "top": 62, "left": -121.7, "attrs": {} },
     {

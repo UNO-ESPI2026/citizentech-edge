@@ -12,8 +12,8 @@
     "z": "1deed3728b5a63f1",
     "name": "1. Recebe os dados do aparelho (MQTT FIWARE, formato UltraLight)",
     "info": "",
-    "x": 190,
-    "y": 40,
+    "x": 710,
+    "y": 240,
     "wires": []
   },
   {
@@ -29,8 +29,8 @@
     "rap": true,
     "rh": 0,
     "inputs": 0,
-    "x": 170,
-    "y": 100,
+    "x": 690,
+    "y": 300,
     "wires": [["bf1b09ca7b6b9b6e"]]
   },
   {
@@ -46,8 +46,8 @@
     "rap": true,
     "rh": 0,
     "inputs": 0,
-    "x": 170,
-    "y": 160,
+    "x": 690,
+    "y": 360,
     "wires": [["4de86076f303e7c2"]]
   },
   {
@@ -62,8 +62,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 420,
-    "y": 100,
+    "x": 940,
+    "y": 300,
     "wires": [["50fef43136174230"], ["6e6440fb466d6e34"]]
   },
   {
@@ -78,8 +78,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 430,
-    "y": 160,
+    "x": 950,
+    "y": 360,
     "wires": [["6e6440fb466d6e34"]]
   },
   {
@@ -94,8 +94,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 640,
-    "y": 80,
+    "x": 1160,
+    "y": 280,
     "wires": [["361a0ed2d6a00878", "6e0f93107e347377"]]
   },
   {
@@ -110,8 +110,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 640,
-    "y": 140,
+    "x": 1160,
+    "y": 340,
     "wires": [["361a0ed2d6a00878", "6e0f93107e347377"]]
   },
   {
@@ -121,8 +121,8 @@
     "name": "envia ao painel",
     "server": "wsAmparo",
     "client": "",
-    "x": 860,
-    "y": 110,
+    "x": 1380,
+    "y": 310,
     "wires": []
   },
   {
@@ -138,8 +138,8 @@
     "targetType": "msg",
     "statusVal": "",
     "statusType": "auto",
-    "x": 850,
-    "y": 170,
+    "x": 1370,
+    "y": 370,
     "wires": []
   },
   {
@@ -148,8 +148,8 @@
     "z": "1deed3728b5a63f1",
     "name": "2. Serve a página HTML e o histórico",
     "info": "Abra http://localhost:1880/amparo",
-    "x": 180,
-    "y": 260,
+    "x": 700,
+    "y": 460,
     "wires": []
   },
   {
@@ -161,8 +161,8 @@
     "method": "get",
     "upload": false,
     "swaggerDoc": "",
-    "x": 150,
-    "y": 320,
+    "x": 670,
+    "y": 520,
     "wires": [["2b63107aeb3cdb7b"]]
   },
   {
@@ -176,8 +176,8 @@
     "syntax": "plain",
     "template": "<!doctype html>\n<html lang=\"pt-BR\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Amparo · Painel da família</title>\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link href=\"https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap\" rel=\"stylesheet\">\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js\"></script>\n<style>\n  /* Cores do manual de marca do Amparo */\n  :root {\n    --surface: #fbf7f0; --raised: #ffffff; --line: #7e888b;\n    --ink: #1c2629; --muted: #4e5a5d;\n    --brand: #0e5e5b; --on-brand: #ffffff; --brand-soft: #dcefea;\n    --sol: #f2a83b; --on-sol: #1c2629; --atencao-soft: #fdefd6;\n    --perigo: #b3261e; --on-perigo: #ffffff; --perigo-soft: #fbe3df;\n    --cinza: #4e5a5d; --focus: #1a4fd6;\n    --sombra: 0 2px 8px rgba(28,38,41,.10);\n  }\n  :root[data-tema=\"contraste\"] {\n    --surface: #000; --raised: #000; --line: #fff;\n    --ink: #fff; --muted: #e6e6e6;\n    --brand: #7ff5e6; --on-brand: #000; --brand-soft: #00332e;\n    --sol: #ffd23f; --on-sol: #000; --atencao-soft: #332600;\n    --perigo: #ff7a6b; --on-perigo: #000; --perigo-soft: #2e0000;\n    --cinza: #e6e6e6; --focus: #ffff00;\n    --sombra: none;\n  }\n  * { box-sizing: border-box; }\n  body {\n    margin: 0; background: var(--surface); color: var(--ink);\n    font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; font-size: 18px; line-height: 1.5;\n  }\n  a, button { font: inherit; }\n  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }\n  .container { max-width: 1180px; margin: 0 auto; padding: 16px; }\n\n  /* Cabeçalho */\n  header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 8px 0 16px; }\n  .marca { display: flex; align-items: center; gap: 10px; margin-right: auto; }\n  .marca h1 { margin: 0; font-size: 26px; }\n  .marca span { font-size: 18px; color: var(--muted); font-weight: 700; }\n  .selo {\n    display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px;\n    border-radius: 999px; border: 2px solid var(--line); background: var(--raised); font-size: 16px; font-weight: 700;\n  }\n  .ponto { width: 12px; height: 12px; border-radius: 999px; background: var(--muted); }\n  .selo.ok .ponto { background: var(--brand); }\n  .selo.erro .ponto { background: var(--perigo); }\n  .botao {\n    min-height: 48px; padding: 0 18px; border-radius: 16px; border: 2px solid var(--line);\n    background: var(--raised); color: var(--ink); font-weight: 700; cursor: pointer; text-decoration: none;\n    display: inline-flex; align-items: center; gap: 8px;\n  }\n  .botao.primario { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }\n  .botao.perigo { border-color: var(--perigo); color: var(--perigo); }\n\n  /* Faixa de alerta (SOS / sem resposta) */\n  .faixa {\n    display: none; align-items: center; gap: 14px; padding: 16px 20px; margin-bottom: 16px;\n    border-radius: 24px; background: var(--perigo); color: var(--on-perigo);\n  }\n  .faixa.ativa { display: flex; animation: pulsar 1.2s ease-in-out infinite; }\n  .faixa strong { font-size: 24px; display: block; }\n  .faixa .acoes { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }\n  .faixa .botao { border-color: var(--on-perigo); background: transparent; color: var(--on-perigo); }\n  @keyframes pulsar { 50% { opacity: .82; } }\n  @media (max-width: 600px) {\n    .faixa { flex-wrap: wrap; }\n    .faixa svg { width: 36px; height: 36px; }\n    .faixa .acoes { margin-left: 0; width: 100%; }\n    .faixa .acoes .botao { flex: 1 1 auto; justify-content: center; }\n  }\n  @media (prefers-reduced-motion: reduce) { .faixa.ativa { animation: none; } }\n\n  /* Grade */\n  .grade { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }\n  .cartao { background: var(--raised); border-radius: 24px; padding: 20px 24px; box-shadow: var(--sombra); border: 2px solid transparent; }\n  :root[data-tema=\"contraste\"] .cartao { border-color: var(--line); }\n  .col-5 { grid-column: span 5; } .col-7 { grid-column: span 7; }\n  .col-8 { grid-column: span 8; } .col-4 { grid-column: span 4; } .col-12 { grid-column: span 12; }\n  @media (max-width: 900px) { .col-5, .col-7, .col-8, .col-4 { grid-column: span 12; } }\n  h2 { margin: 0 0 12px; font-size: 22px; }\n\n  /* Estado */\n  .estado { display: flex; flex-direction: column; gap: 10px; }\n  .estado .pessoa { display: flex; align-items: center; gap: 12px; }\n  .avatar {\n    width: 52px; height: 52px; border-radius: 999px; background: var(--brand-soft); color: var(--brand);\n    display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;\n  }\n  .nivel {\n    display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: 20px;\n    background: var(--brand-soft);\n  }\n  .nivel svg { flex-shrink: 0; }\n  .etiqueta {\n    display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px;\n    font-size: 16px; font-weight: 700; letter-spacing: .04em; background: var(--brand); color: var(--on-brand);\n  }\n  .nivel .titulo { font-size: 30px; line-height: 1.15; font-weight: 700; margin: 6px 0 0; }\n  .nivel .msg { margin: 4px 0 0; }\n  .estado[data-nivel=\"ATENCAO\"] .nivel { background: var(--atencao-soft); }\n  .estado[data-nivel=\"ATENCAO\"] .etiqueta { background: var(--sol); color: var(--on-sol); }\n  .estado[data-nivel=\"PERIGO\"] .nivel,\n  .estado[data-nivel=\"SEM_RESPOSTA\"] .nivel,\n  .estado[data-nivel=\"SOS\"] .nivel { background: var(--perigo-soft); border: 3px solid var(--perigo); }\n  .estado[data-nivel=\"PERIGO\"] .etiqueta,\n  .estado[data-nivel=\"SEM_RESPOSTA\"] .etiqueta,\n  .estado[data-nivel=\"SOS\"] .etiqueta { background: var(--perigo); color: var(--on-perigo); }\n  .estado[data-nivel=\"ERRO_SENSOR\"] .etiqueta { background: var(--cinza); color: var(--surface); }\n  .atualizado { font-size: 16px; color: var(--muted); margin: 0; }\n  .acoes-estado { display: flex; gap: 10px; flex-wrap: wrap; }\n\n  /* Números */\n  .numeros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }\n  .numero { padding: 14px 16px; border-radius: 16px; border: 2px solid var(--line); }\n  .numero .rotulo { font-size: 15px; font-weight: 700; letter-spacing: .04em; color: var(--muted); text-transform: uppercase; }\n  .numero .valor { font-size: 34px; font-weight: 700; line-height: 1.2; }\n  .numero .extra { font-size: 16px; color: var(--muted); }\n  .numero.destaque { background: var(--brand-soft); border-color: transparent; }\n  @media (max-width: 480px) { .numeros { grid-template-columns: 1fr; } .numero .valor { font-size: 30px; } }\n\n  /* Gráfico */\n  .grafico { position: relative; height: 320px; }\n  .legenda-limites { display: flex; gap: 16px; flex-wrap: wrap; font-size: 16px; color: var(--muted); margin-top: 8px; }\n\n  /* Eventos */\n  .eventos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; }\n  .eventos li { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; border: 2px solid var(--line); }\n  .eventos .icone { width: 14px; height: 14px; border-radius: 999px; margin-top: 7px; flex-shrink: 0; background: var(--brand); }\n  .eventos .icone.atencao { background: var(--sol); }\n  .eventos .icone.perigo { background: var(--perigo); }\n  .eventos .icone.cinza { background: var(--muted); }\n  .eventos .texto { font-weight: 700; }\n  .eventos .quando { font-size: 15px; color: var(--muted); }\n  .eventos .atrasado { display: inline-block; margin-top: 4px; padding: 2px 10px; border-radius: 8px; background: var(--atencao-soft); font-size: 14px; font-weight: 700; }\n  .vazio { color: var(--muted); }\n\n  footer { margin-top: 20px; font-size: 15px; color: var(--muted); }\n</style>\n</head>\n<body>\n<div class=\"container\">\n\n  <header>\n    <div class=\"marca\">\n      <svg width=\"44\" height=\"44\" viewBox=\"0 0 64 64\" aria-hidden=\"true\"><path d=\"M10 33 L32 13 L54 33\" fill=\"none\" stroke=\"var(--brand)\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M13 41 Q32 62 51 41\" fill=\"none\" stroke=\"var(--brand)\" stroke-width=\"7\" stroke-linecap=\"round\"/><circle cx=\"32\" cy=\"35\" r=\"7\" fill=\"var(--sol)\"/></svg>\n      <div>\n        <h1>Amparo</h1>\n        <span>Painel da família</span>\n      </div>\n    </div>\n    <span class=\"selo\" id=\"seloPainel\" role=\"status\"><span class=\"ponto\"></span><span id=\"textoPainel\">Conectando ao Node-RED…</span></span>\n    <span class=\"selo\" id=\"seloAparelho\" role=\"status\"><span class=\"ponto\"></span><span id=\"textoAparelho\">Aguardando o aparelho…</span></span>\n    <button class=\"botao\" id=\"btnSom\" aria-pressed=\"false\">Ativar som de alerta</button>\n    <button class=\"botao\" id=\"btnTema\" aria-pressed=\"false\">Alto contraste</button>\n  </header>\n\n  <div class=\"faixa\" id=\"faixa\" role=\"alert\">\n    <svg width=\"40\" height=\"40\" viewBox=\"0 0 32 32\" aria-hidden=\"true\"><path d=\"M8 24v-8a8 8 0 0 1 16 0v8\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M5 24h22M16 4v3M6 9l2 2M26 9l-2 2\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>\n    <div>\n      <strong id=\"faixaTitulo\">Pedido de ajuda</strong>\n      <span id=\"faixaTexto\">A Dona Maria pediu ajuda.</span>\n    </div>\n    <div class=\"acoes\">\n      <a class=\"botao\" href=\"tel:00000000000\">Ligar para ela</a>\n      <a class=\"botao\" href=\"tel:192\">Ligar 192</a>\n      <button class=\"botao\" id=\"btnACaminho\">Estou indo</button>\n      <button class=\"botao\" id=\"btnCiente\">Estou ciente</button>\n    </div>\n  </div>\n\n  <main class=\"grade\">\n    <section class=\"cartao col-5 estado\" id=\"cartaoEstado\" data-nivel=\"NORMAL\" aria-labelledby=\"tEstado\">\n      <h2 id=\"tEstado\" class=\"pessoa\">\n        <span class=\"avatar\" aria-hidden=\"true\">M</span>\n        <span>Dona Maria <span style=\"display:block;font-size:16px;color:var(--muted)\">Mãe · Vila Nova</span></span>\n      </h2>\n      <div class=\"nivel\">\n        <svg id=\"iconeNivel\" width=\"56\" height=\"56\" viewBox=\"0 0 20 20\" aria-hidden=\"true\"></svg>\n        <div>\n          <span class=\"etiqueta\" id=\"etiquetaNivel\">NORMAL</span>\n          <p class=\"titulo\" id=\"tituloNivel\">Aguardando dados</p>\n          <p class=\"msg\" id=\"msgNivel\">O painel atualiza sozinho quando o aparelho envia uma leitura.</p>\n        </div>\n      </div>\n      <p class=\"atualizado\" id=\"atualizado\">Nenhuma leitura ainda.</p>\n      <div class=\"acoes-estado\">\n        <a class=\"botao primario\" href=\"tel:00000000000\">Ligar para ela</a>\n        <a class=\"botao perigo\" href=\"tel:192\">Ligar 192</a>\n      </div>\n    </section>\n\n    <section class=\"cartao col-7\" aria-labelledby=\"tNumeros\">\n      <h2 id=\"tNumeros\">Agora na casa dela</h2>\n      <div class=\"numeros\">\n        <div class=\"numero\"><div class=\"rotulo\">Temperatura</div><div class=\"valor\" id=\"vTemp\">–</div><div class=\"extra\" id=\"vUmid\">Umidade –</div></div>\n        <div class=\"numero\"><div class=\"rotulo\">Sensação térmica</div><div class=\"valor\" id=\"vIc\">–</div><div class=\"extra\">Índice de calor (NOAA)</div></div>\n        <div class=\"numero\"><div class=\"rotulo\">Previsão para 1 hora</div><div class=\"valor\" id=\"vProj\">–</div><div class=\"extra\" id=\"vTaxa\">Ritmo –</div></div>\n        <div class=\"numero destaque\"><div class=\"rotulo\">Exposição ao calor</div><div class=\"valor\" id=\"vGh\">–</div><div class=\"extra\">graus-hora acima de 32 °C</div></div>\n      </div>\n    </section>\n\n    <section class=\"cartao col-8\" aria-labelledby=\"tGrafico\">\n      <h2 id=\"tGrafico\">Sensação térmica ao longo do tempo</h2>\n      <div class=\"grafico\"><canvas id=\"grafico\" role=\"img\" aria-label=\"Gráfico da temperatura e da sensação térmica na casa ao longo do tempo, com as linhas de atenção (32 graus) e perigo (39 graus).\"></canvas></div>\n      <div class=\"legenda-limites\">\n        <span>– – Atenção a partir de 32 °C</span>\n        <span>– – Perigo a partir de 39 °C</span>\n      </div>\n    </section>\n\n    <section class=\"cartao col-4\" aria-labelledby=\"tEventos\">\n      <h2 id=\"tEventos\">Últimos avisos</h2>\n      <ul class=\"eventos\" id=\"listaEventos\" aria-live=\"polite\">\n        <li class=\"vazio\">Nenhum aviso ainda.</li>\n      </ul>\n    </section>\n  </main>\n\n  <footer>\n    Dados simulados para o protótipo (Global Solution · FIAP). Aparelho ESP32 → MQTT (FIWARE) → Node-RED → este painel.\n  </footer>\n</div>\n\n<script>\n  // ------------------------------------------------------------\n  // Configuração: o painel é servido pelo próprio Node-RED.\n  // Se o arquivo for aberto direto do computador, usa o Node-RED local.\n  // ------------------------------------------------------------\n  const BASE = location.protocol.startsWith('http') ? location.origin : 'http://localhost:1880';\n  const URL_HISTORICO = BASE + '/amparo/historico';\n  const URL_AJUDA = BASE + '/amparo/ajuda';\n  const URL_WS = BASE.replace(/^http/, 'ws') + '/ws/amparo';\n  const LIMITE_ATENCAO = 32, LIMITE_PERIGO = 39;\n  const SEGUNDOS_APARELHO_OFFLINE = 30;  // sem leitura há mais tempo = aparelho sem conexão\n  const MAX_PONTOS = 120;\n\n  const $ = (id) => document.getElementById(id);\n  let ultimaLeitura = null;\n  let somAtivo = false;\n  let audioCtx = null;\n  let timerSom = null;\n\n  // ---------------- Textos de cada estado ----------------\n  const ESTADOS = {\n    NORMAL:       { etiqueta: 'NORMAL',       titulo: 'Está tudo bem',              msg: 'A temperatura na casa está tranquila.' },\n    ATENCAO:      { etiqueta: 'ATENÇÃO',      titulo: 'Calor subindo',              msg: 'O aparelho pediu para ela beber água e ir para o lugar mais fresco.' },\n    PERIGO:       { etiqueta: 'PERIGO',       titulo: 'Calor perigoso na casa',     msg: 'O aparelho está pedindo para ela confirmar que está bem.' },\n    SEM_RESPOSTA: { etiqueta: 'SEM RESPOSTA', titulo: 'Ela não respondeu ao alerta', msg: 'Ligue para ela ou chame alguém que esteja perto.' },\n    SOS:          { etiqueta: 'AJUDA PEDIDA', titulo: 'Ela pediu ajuda',            msg: 'Ligue para ela agora ou chame o 192.' },\n    ERRO_SENSOR:  { etiqueta: 'VERIFICAR',    titulo: 'Sensor com problema',        msg: 'O aparelho não está conseguindo medir a temperatura.' }\n  };\n\n  const ICONES = {\n    NORMAL:  '<circle cx=\"10\" cy=\"10\" r=\"8\" fill=\"none\" stroke=\"var(--brand)\" stroke-width=\"2\"/><path d=\"M6 10l3 3 5-6\" fill=\"none\" stroke=\"var(--brand)\" stroke-width=\"2\" stroke-linecap=\"round\"/>',\n    ATENCAO: '<path d=\"M10 2l9 16H1z\" fill=\"none\" stroke=\"var(--ink)\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M10 8v4M10 15v.5\" stroke=\"var(--ink)\" stroke-width=\"2\" stroke-linecap=\"round\"/>',\n    PERIGO:  '<path d=\"M6.5 1.5h7l5 5v7l-5 5h-7l-5-5v-7z\" fill=\"none\" stroke=\"var(--perigo)\" stroke-width=\"2\" stroke-linejoin=\"round\"/><path d=\"M10 6v5M10 14v.5\" stroke=\"var(--perigo)\" stroke-width=\"2\" stroke-linecap=\"round\"/>',\n    ERRO_SENSOR: '<circle cx=\"10\" cy=\"10\" r=\"8\" fill=\"none\" stroke=\"var(--muted)\" stroke-width=\"2\"/><path d=\"M10 5v6M10 14v.5\" stroke=\"var(--muted)\" stroke-width=\"2\" stroke-linecap=\"round\"/>'\n  };\n  ICONES.SEM_RESPOSTA = ICONES.PERIGO;\n  ICONES.SOS = ICONES.PERIGO;\n\n  const EVENTOS = {\n    normal:       { texto: 'Voltou ao normal',              cor: '' },\n    atencao:      { texto: 'Atenção: calor subindo',        cor: 'atencao' },\n    perigo:       { texto: 'Perigo: calor perigoso',        cor: 'perigo' },\n    sem_resposta: { texto: 'Não respondeu ao alerta',       cor: 'perigo' },\n    sos:          { texto: 'Pediu ajuda (botão vermelho)',  cor: 'perigo' },\n    ok:           { texto: 'Confirmou que está bem',        cor: '' },\n    erro_sensor:  { texto: 'Sensor com problema',           cor: 'cinza' },\n    sensor_ok:    { texto: 'Sensor voltou a funcionar',     cor: '' },\n    ajuda:        { texto: 'Aparelho avisou: ajuda a caminho', cor: '' }\n  };\n\n  // ---------------- Formatação ----------------\n  const graus = (v) => (v === undefined || v === null || isNaN(v)) ? '–' : v.toFixed(1).replace('.', ',') + ' °C';\n  const hora = (ms) => new Date(ms).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });\n\n  // ---------------- Gráfico ----------------\n  const css = (nome) => getComputedStyle(document.documentElement).getPropertyValue(nome).trim();\n  // Se a biblioteca de gráficos não carregar (sem internet), o painel continua funcionando sem o gráfico\n  const temGrafico = typeof Chart !== 'undefined';\n  if (!temGrafico) {\n    document.querySelector('.grafico').innerHTML = '<p class=\"vazio\">O gráfico precisa de internet para carregar. Os outros dados continuam atualizando.</p>';\n  }\n  const grafico = temGrafico ? new Chart($('grafico'), {\n    type: 'line',\n    data: { labels: [], datasets: [\n      { label: 'Sensação térmica', data: [], borderWidth: 3, tension: .3, pointRadius: 0 },\n      { label: 'Temperatura', data: [], borderWidth: 2, tension: .3, pointRadius: 0 },\n      { label: 'Atenção (32 °C)', data: [], borderWidth: 2, borderDash: [6, 6], pointRadius: 0 },\n      { label: 'Perigo (39 °C)', data: [], borderWidth: 2, borderDash: [6, 6], pointRadius: 0 }\n    ]},\n    options: {\n      responsive: true, maintainAspectRatio: false, animation: false,\n      interaction: { mode: 'index', intersect: false },\n      scales: {\n        y: { suggestedMin: 22, suggestedMax: 45, title: { display: true, text: '°C' } },\n        x: { ticks: { maxTicksLimit: 8 } }\n      },\n      plugins: { legend: { labels: { font: { size: 14 } } } }\n    }\n  }) : { data: { labels: [], datasets: [{data:[]},{data:[]},{data:[]},{data:[]}] }, options: { scales: { x: { ticks: {} }, y: {} } }, update() {} };\n\n  function aplicarCoresGrafico() {\n    if (!temGrafico) return;\n    const [sens, temp, aten, per] = grafico.data.datasets;\n    sens.borderColor = css('--perigo'); temp.borderColor = css('--brand');\n    aten.borderColor = css('--sol'); per.borderColor = css('--perigo');\n    [sens, temp, aten, per].forEach(ds => ds.backgroundColor = ds.borderColor);  // legenda com a mesma cor da linha\n    Chart.defaults.color = css('--ink');\n    grafico.options.scales.x.grid = { color: css('--line') + '33' };\n    grafico.options.scales.y.grid = { color: css('--line') + '33' };\n    grafico.options.scales.x.ticks.color = css('--ink');\n    grafico.options.scales.y.ticks = { color: css('--ink') };\n    grafico.update();\n  }\n\n  function adicionarPonto(d) {\n    const g = grafico.data;\n    g.labels.push(hora(d.recebidoEm || Date.now()));\n    g.datasets[0].data.push(d.ic);\n    g.datasets[1].data.push(d.temp);\n    g.datasets[2].data.push(LIMITE_ATENCAO);\n    g.datasets[3].data.push(LIMITE_PERIGO);\n    if (g.labels.length > MAX_PONTOS) { g.labels.shift(); g.datasets.forEach(ds => ds.data.shift()); }\n  }\n\n  // ---------------- Atualização da tela ----------------\n  function mostrarLeitura(d, atualizarGrafico = true) {\n    ultimaLeitura = d;\n    const estado = ESTADOS[d.estado] ? d.estado : 'NORMAL';\n    const info = ESTADOS[estado];\n    $('cartaoEstado').dataset.nivel = estado;\n    $('etiquetaNivel').textContent = info.etiqueta;\n    $('tituloNivel').textContent = info.titulo;\n    $('msgNivel').textContent = info.msg;\n    $('iconeNivel').innerHTML = ICONES[estado];\n    $('atualizado').textContent = 'Última leitura às ' + hora(d.recebidoEm || Date.now());\n\n    $('vTemp').textContent = graus(d.temp);\n    $('vUmid').textContent = 'Umidade ' + (isNaN(d.umid) ? '–' : Math.round(d.umid) + '%');\n    $('vIc').textContent = graus(d.ic);\n    $('vProj').textContent = graus(d.icProjetado);\n    const taxa = Number(d.taxa) || 0;\n    $('vTaxa').textContent = taxa > 0.05 ? 'Esquentando ' + taxa.toFixed(1).replace('.', ',') + ' °C por hora'\n                           : taxa < -0.05 ? 'Esfriando ' + Math.abs(taxa).toFixed(1).replace('.', ',') + ' °C por hora'\n                           : 'Temperatura estável';\n    $('vGh').textContent = isNaN(d.grausHora) ? '–' : Number(d.grausHora).toFixed(1).replace('.', ',');\n\n    if (atualizarGrafico) { adicionarPonto(d); grafico.update(); }\n    if (estado === 'SOS' || estado === 'SEM_RESPOSTA') mostrarFaixa(estado);\n    else esconderFaixa();\n    verificarAparelho();\n  }\n\n  function adicionarEvento(e, noTopo = true) {\n    const lista = $('listaEventos');\n    const vazio = lista.querySelector('.vazio');\n    if (vazio) vazio.remove();\n    const info = EVENTOS[e.evento] || { texto: e.evento, cor: 'cinza' };\n    const li = document.createElement('li');\n    li.innerHTML =\n      '<span class=\"icone ' + info.cor + '\" aria-hidden=\"true\"></span>' +\n      '<div><div class=\"texto\"></div><div class=\"quando\"></div>' +\n      (e.atrasado ? '<span class=\"atrasado\">Enviado depois: o aparelho estava sem internet</span>' : '') +\n      '</div>';\n    li.querySelector('.texto').textContent = info.texto;\n    li.querySelector('.quando').textContent = 'Às ' + hora(e.quando || Date.now()) +\n      (e.ic ? ' · sensação ' + graus(e.ic) : '');\n    noTopo ? lista.prepend(li) : lista.append(li);\n    while (lista.children.length > 30) lista.lastChild.remove();\n\n    if (noTopo && (e.evento === 'sos' || e.evento === 'sem_resposta')) mostrarFaixa(e.evento === 'sos' ? 'SOS' : 'SEM_RESPOSTA');\n  }\n\n  // ---------------- Faixa de alerta e som ----------------\n  function mostrarFaixa(estado) {\n    const faixa = $('faixa');\n    if (faixa.dataset.ciente === estado) return;     // a família já viu este alerta\n    $('faixaTitulo').textContent = estado === 'SOS' ? 'Pedido de ajuda' : 'Sem resposta ao alerta';\n    $('faixaTexto').textContent = estado === 'SOS'\n      ? 'A Dona Maria apertou o botão de ajuda.'\n      : 'A Dona Maria não confirmou que está bem durante o calor perigoso.';\n    faixa.classList.add('ativa');\n    tocarAlarme(true);\n  }\n  function esconderFaixa() {\n    $('faixa').classList.remove('ativa');\n    $('faixa').dataset.ciente = '';\n    tocarAlarme(false);\n  }\n  // Envia o comando \"ajuda\" ao aparelho (Node-RED -> MQTT /TEF/amparo001/cmd)\n  $('btnACaminho').onclick = async () => {\n    const b = $('btnACaminho');\n    b.disabled = true; b.textContent = 'Enviando...';\n    try {\n      const r = await fetch(URL_AJUDA, { method: 'POST' });\n      b.textContent = r.ok ? 'Aviso enviado' : 'Falhou, tente de novo';\n    } catch (err) { b.textContent = 'Falhou, tente de novo'; }\n    setTimeout(() => { b.disabled = false; b.textContent = 'Estou indo'; }, 4000);\n  };\n  $('btnCiente').onclick = () => {\n    $('faixa').dataset.ciente = ultimaLeitura ? ultimaLeitura.estado : 'SOS';\n    $('faixa').classList.remove('ativa');\n    tocarAlarme(false);\n  };\n\n  function bipe() {\n    if (!audioCtx) return;\n    const o = audioCtx.createOscillator(), g = audioCtx.createGain();\n    o.frequency.value = 1800; g.gain.value = 0.15;\n    o.connect(g); g.connect(audioCtx.destination);\n    o.start(); o.stop(audioCtx.currentTime + 0.25);\n  }\n  function tocarAlarme(ligar) {\n    clearInterval(timerSom); timerSom = null;\n    if (ligar && somAtivo) { bipe(); timerSom = setInterval(bipe, 1000); }\n  }\n  $('btnSom').onclick = () => {\n    somAtivo = !somAtivo;\n    if (somAtivo && !audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();\n    $('btnSom').setAttribute('aria-pressed', somAtivo);\n    $('btnSom').textContent = somAtivo ? 'Som de alerta ligado' : 'Ativar som de alerta';\n    if (somAtivo) bipe();\n  };\n\n  // ---------------- Alto contraste ----------------\n  $('btnTema').onclick = () => {\n    const ativo = document.documentElement.dataset.tema === 'contraste';\n    document.documentElement.dataset.tema = ativo ? '' : 'contraste';\n    $('btnTema').setAttribute('aria-pressed', !ativo);\n    aplicarCoresGrafico();\n  };\n\n  // ---------------- Situação das conexões ----------------\n  function selo(id, textoId, classe, texto) {\n    $(id).className = 'selo ' + classe;\n    $(textoId).textContent = texto;\n  }\n  function verificarAparelho() {\n    if (!ultimaLeitura) return;\n    const seg = Math.round((Date.now() - (ultimaLeitura.recebidoEm || Date.now())) / 1000);\n    if (seg > SEGUNDOS_APARELHO_OFFLINE) {\n      selo('seloAparelho', 'textoAparelho', 'erro', 'Aparelho sem conexão há ' + seg + ' s (ele continua alertando em casa)');\n    } else {\n      selo('seloAparelho', 'textoAparelho', 'ok', 'Aparelho conectado');\n    }\n  }\n  setInterval(verificarAparelho, 5000);\n\n  // ---------------- Dados: histórico + tempo real ----------------\n  async function carregarHistorico() {\n    try {\n      const r = await fetch(URL_HISTORICO);\n      const dados = await r.json();\n      (dados.historico || []).forEach(d => adicionarPonto(d));\n      grafico.update();\n      const h = dados.historico || [];\n      if (h.length) mostrarLeitura(h[h.length - 1], false);\n      (dados.eventos || []).slice().reverse().forEach(e => adicionarEvento(e, true));\n      esconderFaixa();\n      if (h.length && (h[h.length - 1].estado === 'SOS' || h[h.length - 1].estado === 'SEM_RESPOSTA')) mostrarFaixa(h[h.length - 1].estado);\n    } catch (e) {\n      console.log('Sem histórico ainda', e);\n    }\n  }\n\n  function conectar() {\n    const ws = new WebSocket(URL_WS);\n    ws.onopen = () => selo('seloPainel', 'textoPainel', 'ok', 'Painel conectado');\n    ws.onclose = () => {\n      selo('seloPainel', 'textoPainel', 'erro', 'Painel desconectado · tentando de novo');\n      setTimeout(conectar, 3000);\n    };\n    ws.onmessage = (m) => {\n      let msg;\n      try { msg = JSON.parse(m.data); } catch (e) { return; }\n      if (msg.tipo === 'leitura') mostrarLeitura(msg.dados);\n      if (msg.tipo === 'evento') adicionarEvento(msg.dados);\n    };\n  }\n\n  aplicarCoresGrafico();\n  carregarHistorico().then(conectar);\n</script>\n</body>\n</html>\n",
     "output": "str",
-    "x": 370,
-    "y": 320,
+    "x": 890,
+    "y": 520,
     "wires": [["e69bab69a804d5be"]]
   },
   {
@@ -189,8 +189,8 @@
     "headers": {
       "content-type": "text/html; charset=utf-8"
     },
-    "x": 570,
-    "y": 320,
+    "x": 1090,
+    "y": 520,
     "wires": []
   },
   {
@@ -202,8 +202,8 @@
     "method": "get",
     "upload": false,
     "swaggerDoc": "",
-    "x": 170,
-    "y": 380,
+    "x": 690,
+    "y": 580,
     "wires": [["039664ec89ffc8ae"]]
   },
   {
@@ -218,8 +218,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 380,
-    "y": 380,
+    "x": 900,
+    "y": 580,
     "wires": [["762ff0f3b3ac16c7"]]
   },
   {
@@ -232,8 +232,8 @@
       "content-type": "application/json",
       "Access-Control-Allow-Origin": "*"
     },
-    "x": 570,
-    "y": 380,
+    "x": 1090,
+    "y": 580,
     "wires": []
   },
   {
@@ -242,8 +242,8 @@
     "z": "1deed3728b5a63f1",
     "name": "3. Testes (sem precisar do Wokwi)",
     "info": "",
-    "x": 180,
-    "y": 460,
+    "x": 700,
+    "y": 660,
     "wires": []
   },
   {
@@ -263,8 +263,8 @@
     "topic": "",
     "payload": "",
     "payloadType": "date",
-    "x": 160,
-    "y": 520,
+    "x": 680,
+    "y": 720,
     "wires": [["b26a21f0687ac16b"]]
   },
   {
@@ -279,8 +279,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 360,
-    "y": 520,
+    "x": 880,
+    "y": 720,
     "wires": [["bf1b09ca7b6b9b6e"]]
   },
   {
@@ -300,8 +300,8 @@
     "topic": "",
     "payload": "",
     "payloadType": "date",
-    "x": 150,
-    "y": 580,
+    "x": 670,
+    "y": 780,
     "wires": [["ed23575bbe629ba6"]]
   },
   {
@@ -316,8 +316,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 350,
-    "y": 580,
+    "x": 870,
+    "y": 780,
     "wires": [["bf1b09ca7b6b9b6e"]]
   },
   {
@@ -337,8 +337,8 @@
     "topic": "",
     "payload": "",
     "payloadType": "date",
-    "x": 160,
-    "y": 640,
+    "x": 680,
+    "y": 840,
     "wires": [["f9cc129c1edb5226"]]
   },
   {
@@ -353,8 +353,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 350,
-    "y": 640,
+    "x": 870,
+    "y": 840,
     "wires": [[]]
   },
   {
@@ -363,8 +363,8 @@
     "z": "1deed3728b5a63f1",
     "name": "4. Envia o comando \"ajuda\" ao aparelho (igual a publicar no MyMQTT)",
     "info": "Publica \"amparo001@ajuda|\" em /TEF/amparo001/cmd.\nO botão \"Estou indo\" da página chama POST /amparo/ajuda.",
-    "x": 260,
-    "y": 720,
+    "x": 780,
+    "y": 920,
     "wires": []
   },
   {
@@ -376,8 +376,8 @@
     "method": "post",
     "upload": false,
     "swaggerDoc": "",
-    "x": 160,
-    "y": 780,
+    "x": 680,
+    "y": 980,
     "wires": [["f214117219cc0d5e", "b6b7c76875877e45"]]
   },
   {
@@ -397,8 +397,8 @@
     "topic": "",
     "payload": "",
     "payloadType": "date",
-    "x": 190,
-    "y": 840,
+    "x": 710,
+    "y": 1040,
     "wires": [["f214117219cc0d5e"]]
   },
   {
@@ -413,8 +413,8 @@
     "initialize": "",
     "finalize": "",
     "libs": [],
-    "x": 420,
-    "y": 810,
+    "x": 940,
+    "y": 1010,
     "wires": [["b83e0359efe6f33a"]]
   },
   {
@@ -431,8 +431,8 @@
     "correl": "",
     "expiry": "",
     "broker": "b2f0000000000002",
-    "x": 660,
-    "y": 810,
+    "x": 1180,
+    "y": 1010,
     "wires": []
   },
   {
@@ -444,8 +444,8 @@
     "headers": {
       "Access-Control-Allow-Origin": "*"
     },
-    "x": 400,
-    "y": 760,
+    "x": 920,
+    "y": 960,
     "wires": []
   },
   {
