@@ -12,6 +12,13 @@ DHT22     ESP32       Tela + buzzer   MQTT (FIWARE) → Node-RED → Painel da f
 
 ---
 
+## Links da entrega
+
+- **Simulação no Wokwi:** [Wokwi](https://wokwi.com/projects/480413696426722305)
+- **Vídeo no YouTube:** [Youtube](https://www.youtube.com/watch?v=1i8AsZRlyl8)
+
+---
+
 ## Ficha da CitizenTech
 
 | | |
@@ -245,16 +252,6 @@ citizentech-edge/
 ├── wokwi.txt                   # Link para o Wokwi
 └── README.md
 ```
-
----
-
-## Links da entrega
-
-- **Simulação no Wokwi:** `https://wokwi.com/projects/480413696426722305`
-- **Vídeo no YouTube:** `https://www.youtube.com/watch?v=1i8AsZRlyl8`
-
----
-
 
 ## Equipe
 
